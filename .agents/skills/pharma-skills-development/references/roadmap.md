@@ -1,29 +1,16 @@
-# Development roadmap
+# SAS ADaM roadmap
 
-Use milestone evidence rather than dates to choose the next step. Phases can overlap when independent work is useful; the user may explicitly prioritize a different component.
-
-| Phase | Deliverable | Exit evidence |
+| Milestone | Deliverable | Completion evidence |
 | --- | --- | --- |
-| 0: Scope and benchmark | Synthetic safety study, chosen execution language, documented specifications, manually reviewed expected results | Reproducible fixtures; analysis decisions explicit; expected results independent of generated code |
-| 1: Standards Navigator | Version-constrained retrieval and cited answers | Correct source/version/section on representative questions; explicit handling of unavailable or conflicting evidence |
-| 2: ADaM and TLF | ADSL/ADAE and demographics/TEAE tables from synthetic DM/EX/AE | Executed code; correct populations, derivations, denominators, cell values, and rendered layout |
-| 3: Independent QC | Independent derivations and discrepancy reports | Critical seeded errors detected; false positives measured; clean benchmark also passes |
-| 4: SDTM development | Limited raw-source mapping to DM/AE, extending to EX as needed | Source metadata and mapping supplied; keys, mappings, controlled terminology, traceability checked |
-| 5: Extension and communication | Additional domains, BDS, efficacy/TTE, reproducible conference materials | Held-out tasks evaluated; claims supported by recorded evidence; tutorial reproducible |
+| 0: Rules and fixtures | Single-period synthetic study; explicit specifications and independent expected values | Input keys, counts, assumptions and expected decisions documented |
+| 1: ADSL first | SAS ADSL skill, program and QC | Subject completeness, demographics, planned/actual treatment, exposure, populations, disposition checked |
+| 2: BDS | SAS BDS skill with ADLB and ADVS references/examples | Parameter/unit consistency, baseline ties, missing/zero baseline, visit selection and changes checked |
+| 3: OCCDS | SAS OCCDS skill with ADAE and ADCM references/examples | Source events retained, date uncertainty, TEAE and medication boundaries checked |
+| 4: Integrated evaluation | Cross-dataset reconciliation and independent comparison | Seeded defects detected; clean controls pass; execution and limitations recorded |
+| 5: PharmaSUG delivery | Held-out tasks and reproducible conference materials | Claims supported by recorded trials, reviewer effort and error metrics |
 
-## Component boundaries
+ADSL has priority in implementation and evaluation. BDS/OCCDS need both their own source SDTM and checked ADSL. ADSL defects can propagate consistently to all children; cross-dataset agreement must be supplemented with source-based expectations.
 
-- Standards Navigator: answer standards questions with versioned evidence; distinguish requirements, recommendations, and examples.
-- Specification Reviewer: identify omissions and conflicts across SAP, specs, shells, and study context; do not resolve analysis choices without an explicit basis.
-- SDTM Developer: implement approved source mappings, retaining source-to-target traceability.
-- ADaM Developer: implement approved analysis derivations and preserve record-level lineage where appropriate.
-- TLF Developer: implement shell and analysis requirements, exposing numeric results separately from rendering.
-- Independent QC: independently derive expected datasets/cells and classify discrepancies.
+Version 1 uses general SAS 9.4 without sponsor-private macros. Start with an explicitly specified single-period study; do not silently generalize examples to crossover or complex exposure histories. Small examples are teaching artifacts; a full benchmark pipeline is a later deliverable.
 
-## Initial scope
-
-Use descriptive safety reporting first. Include repeated AE records, no-event subjects, zero-count categories, missing covariates, treatment-date boundaries, and partial dates with explicitly specified handling. Synthetic coded SOC/PT values may be used without suggesting that a licensed medical dictionary was obtained or applied.
-
-Choose one runnable language first. If the user has not selected one, inspect the repository/runtime and explain the proposed choice. Expand to cross-language comparison only when both runtimes and relevant expertise are available. Adding a language is not a substitute for independent specifications and reference results.
-
-Do not expand into broad efficacy inference, submission packaging, or enterprise integrations until requested or the preceding evidence supports that scope.
+Out of scope: raw-to-SDTM generation, TLF generation, efficacy models, ADTTE, oncology response, Define-XML production and full submission validation. Supporting standards retrieval and specification review remain embedded in dataset development.

@@ -1,42 +1,38 @@
-# QC and evaluation
+# ADaM QC and evaluation
 
-## Independent reference construction
+Assess structure/keys, metadata, derivation values and execution/logs separately. Add cross-dataset reconciliation after ADSL-specific checks.
 
-Use approved specifications and raw benchmark inputs to construct QC expectations. Do not copy production derivations or use production outputs as the expected result. Separate QC construction from comparison: production artifacts can be read during discrepancy investigation after QC expectations are fixed. Document any shared helpers or model context that limits independence.
+## Independent expectations
 
-For a small synthetic benchmark, manually calculate and review subject-level classifications and key table cells. Keep reference fixtures versioned and separate from implementation output. Fix a random seed if generating data, and preserve the data-generating assumptions.
+Construct truth from specifications and sources before viewing generated outputs. The example uses manually authored expectations for all 12 ADSL subjects and selected variables on every BDS/OCCDS fixture record; this is partial variable coverage, not a complete independent implementation.
 
-## Required behavioral scenarios
+For real studies, keep production implementation out of QC logic construction. Inspect production during discrepancy investigation after expectations are fixed. Document shared helpers and ADSL dependencies.
 
-| Scenario | Observable behavior |
+## Behavioral scenarios
+
+| Case | Required behavior |
 | --- | --- |
-| Missing TEAE window | Ask for the rule or label a proposed synthetic assumption; do not silently invent a study rule |
-| Unavailable requested IG | Identify the evidence gap; do not fabricate a citation or substitute another version silently |
-| Duplicate join keys | Detect unexpected cardinality and explain affected counts |
-| Multiple events per subject/PT | Correctly distinguish subject incidence from event frequency |
-| Wrong population denominator | Comparison identifies the affected table cells and denominator source |
-| Boundary and partial dates | Follow explicit rules; preserve uncertainty/imputation information |
-| Correct clean reference | Pass without spurious critical discrepancies |
-| Runtime unavailable | Label code as unexecuted and identify the remaining verification |
+| Duplicate/missing DM key | Stop before ambiguous merging; retain offending keys |
+| Untreated or planned/actual treatment mismatch | Preserve eligible subjects and use specified treatment/population evidence |
+| Missing/partial/invalid dates | Preserve source text; no unauthorized imputation; expose uncertainty |
+| Missing baseline/result | No invented baseline or change |
+| Baseline/visit tie | Documented deterministic tie-break, not input order |
+| BASE = 0 | Percent change undefined; no division by zero |
+| Similar events with distinct SEQ | Preserve separate source records |
+| TEAE boundary or pre-treatment worsening | Apply approved window/worsening rules; unknown is not automatically false |
+| Medication before/across/after treatment | Explicit interval and ongoing rules |
+| Orphan child or changed inherited flag | Detect unmatched keys and inconsistent ADSL inheritance |
+| Corrupted ADSL propagated to children | Source-based expectations still detect the error |
+| No SAS runtime | Label SAS unexecuted and checks pending |
 
-Run relevant scenarios through the skill on actual tasks when possible. A checklist or frontmatter validator alone is not a behavioral evaluation. Use a temporary isolated workspace for smoke runs; do not contaminate benchmark truth with generated artifacts.
+Inject defects only on copies: duplicate DM key, altered population/treatment, wrong baseline, zero-baseline division, removed missing-date guard, wrong TEAE endpoint, or wrong ongoing classification. Include clean controls and record the responsible check.
 
-## Error injection
+## Reports and acceptance
 
-Introduce one known defect per test initially: wrong population, excluded treatment-start date, event-count instead of subject-count, duplicated join, unjustified date imputation, or swapped treatment display columns. Include negative controls without defects. Record which check detected each error and whether its explanation identifies the actual cause.
+Each finding includes ID, dataset/key/variable, expected/actual, rule/source, severity, affected subjects and follow-up. Separate expected fixture uncertainties from programming defects. Report checked and unchecked variables.
 
-Classify discrepancies as input/spec ambiguity, standards/version issue, derivation, population/denominator, numeric precision, or presentation. Use exact comparison for identifiers, flags, and counts; predeclare justified tolerances for floating-point quantities. Do not hide substantive differences with broad tolerances.
+Compare keys/dates/flags/counts exactly; predeclare tolerances for other numerics. Attribute checks are independent. Agreement cannot excuse wrong selection.
 
-## Conference evaluation
+For conference evaluation, compare a generic agent, dataset skills, and skills plus retrieval/QC on held-out tasks with comparable inputs/model/runtime/budget. Record execution rate, critical derivation correctness, metadata/key errors, defect detection/false alarms, citation support and review effort. Preserve failures and run variability.
 
-Compare a generic agent, an agent with domain skills, and an agent with domain skills plus retrieval and QC. Hold model/version, task inputs, runtime, and budget as constant as practical. Preserve prompts, seeds where supported, skill versions, source versions, execution logs, and timing. Repeat stochastic runs when feasible and report variability and failed runs.
-
-Separate development cases from held-out evaluation cases. Report:
-
-- Executable tasks / attempted tasks.
-- Correct critical derivations and cells / evaluated derivations and cells, with denominators and severity.
-- Supported citations / assessed citations, and version accuracy.
-- Detected seeded defects / seeded defects; false alarms / clean cases.
-- Human correction counts and review time under a stated review procedure.
-
-Predefine acceptance thresholds for the task's risk and review context. An initial MVP should resolve critical reference discrepancies before claiming completion. Neither standards conformance alone nor benchmark success establishes regulatory suitability or production validation.
+Authoring completion requires skills, examples, reference values and static checks. “SAS verified” additionally requires actual SAS execution, inspected logs, passing comparisons and independent review. Conformance or one successful example does not establish universal production validation.

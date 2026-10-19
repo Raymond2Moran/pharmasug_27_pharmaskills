@@ -1,0 +1,4 @@
+interface:
+  display_name: "SAS ADAM BDS"
+  short_description: "Develop and QC SAS BDS analysis datasets"
+  default_prompt: "Use $sas-adam-bds to develop and independently check the requested SAS ADaM dataset from SDTM and approved specifications."

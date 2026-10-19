@@ -1,0 +1,4 @@
+interface:
+  display_name: "SAS ADAM ADSL"
+  short_description: "Develop and QC SAS ADSL analysis datasets"
+  default_prompt: "Use $sas-adam-adsl to develop and independently check the requested SAS ADaM dataset from SDTM and approved specifications."

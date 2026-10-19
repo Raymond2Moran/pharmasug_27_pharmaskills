@@ -1,0 +1,166 @@
+/* SYNTHETIC, minimal SDTM-shaped teaching inputs, not submission SDTM.
+   Fixed records: no stochastic generation and no seed needed.
+   Numeric zero pulse is deliberately nonphysiologic to exercise BASE=0. */
+data sdtm.dm;
+  length STUDYID $8 USUBJID $12 SUBJID $3 ARM $8 SEX $1 AGE 8;
+  label STUDYID='Study Identifier' USUBJID='Unique Subject Identifier'
+        SUBJID='Subject Identifier' ARM='Planned Arm' SEX='Sex' AGE='Age';
+  infile datalines dlm='|' dsd truncover;
+  input SUBJID :$3. ARM :$8. SEX :$1. AGE;
+  STUDYID='SYN001'; USUBJID=cats(STUDYID,'-',SUBJID);
+datalines;
+001|Drug|F|45
+002|Drug|M|52
+003|Placebo|F|38
+004|Drug|M|60
+005|Drug|F|49
+006|Placebo|M|55
+007|Placebo|F|41
+008|Drug|M|63
+009|Placebo|F|47
+010|Placebo|M|50
+011||F|35
+012|Drug|M|58
+;
+run;
+
+data sdtm.ex;
+  length STUDYID $8 USUBJID $12 SUBJID $3 EXSEQ 8 EXTRT $8
+         EXDOSE 8 EXSTDTC EXENDTC $10;
+  infile datalines dlm='|' dsd truncover;
+  input SUBJID :$3. EXSEQ EXTRT :$8. EXDOSE EXSTDTC :$10. EXENDTC :$10.;
+  STUDYID='SYN001'; USUBJID=cats(STUDYID,'-',SUBJID); drop SUBJID;
+datalines;
+001|1|Drug|10|2025-01-10|2025-01-14
+001|2|Drug|10|2025-01-15|2025-01-20
+002|1|Drug|10|2025-01-10|2025-01-20
+003|1|Drug|10|2025-01-10|2025-01-20
+004|1|Drug|10|2025-01-10|2025-01-20
+005|1|Drug|10|2025-01-10|2025-01-20
+006|1|Placebo|0|2025-01-10|2025-01-20
+008|1|Drug|10|2025-01|2025-01-20
+009|1|Placebo|0|2025-01-12|2025-01-18
+010|1|Placebo|0|2025-01-10|2025-01-20
+012|1|Drug|10|2025-01-10|2025-01-20
+;
+run;
+
+data sdtm.ds;
+  length STUDYID $8 USUBJID $12 SUBJID $3 DSSEQ 8 DSCAT $20
+         DSDECOD $24 DSSTDTC $10;
+  infile datalines dlm='|' dsd truncover;
+  input SUBJID :$3. DSDECOD :$24. DSSTDTC :$10.;
+  STUDYID='SYN001'; USUBJID=cats(STUDYID,'-',SUBJID);
+  DSSEQ=1; DSCAT='DISPOSITION EVENT'; drop SUBJID;
+datalines;
+001|COMPLETED|2025-01-25
+002|COMPLETED|2025-01-25
+003|COMPLETED|2025-01-25
+004|DISCONTINUED|2025-01-21
+005|COMPLETED|2025-01-25
+006|COMPLETED|2025-01-25
+007|WITHDRAWN|2025-01-09
+008|DISCONTINUED|2025-01-21
+009|COMPLETED|2025-01-25
+010|COMPLETED|2025-01-25
+011|SCREEN FAILURE|2025-01-08
+012|COMPLETED|2025-01-25
+;
+run;
+
+data sdtm.lb;
+  length STUDYID $8 USUBJID $12 SUBJID $3 LBSEQ 8 LBTESTCD $8
+         LBSTRESN 8 LBSTRESU $8 LBDTC $10 VISITNUM 8 VISIT $12
+         LBSTNRLO LBSTNRHI 8;
+  infile datalines dlm='|' dsd truncover;
+  input SUBJID :$3. LBSEQ LBDTC :$10. LBSTRESN VISITNUM LBSTNRLO LBSTNRHI;
+  STUDYID='SYN001'; USUBJID=cats(STUDYID,'-',SUBJID);
+  LBTESTCD='ALT'; LBSTRESU='U/L';
+  if VISITNUM=0 then VISIT='Baseline'; else VISIT='Follow-up'; drop SUBJID;
+datalines;
+001|1|2025-01-09|10|0|5|15
+001|2|2025-01-09|12|0|5|15
+001|3|2025-01-15|18|1|5|15
+002|1|2025-01-15|20|1|5|15
+003|1|2025-01-09|0|0|5|15
+003|2|2025-01-15|5|1|5|15
+004|1|2025-01-09|.|0|5|15
+004|2|2025-01-15|20|1|5|15
+005|1|2025-01-09|10|0|5|15
+005|2|2025-01-15|.|1|5|15
+006|1|2025-01-09|10|0|5|15
+006|2|2025-01-10|12|1|5|15
+008|1|2025-01-09|9|0|5|15
+009|1|2025-01-11|5|0|5|15
+009|2|2025-01-12|10|1|.|.
+012|1|2025-01|7|0|5|15
+012|2|2025-01-15|9|1|5|15
+;
+run;
+
+data sdtm.vs;
+  length STUDYID $8 USUBJID $12 SUBJID $3 VSSEQ 8 VSTESTCD $8
+         VSSTRESN 8 VSSTRESU $12 VSDTC $10 VISITNUM 8 VISIT $12;
+  infile datalines dlm='|' dsd truncover;
+  input SUBJID :$3. VSSEQ VSDTC :$10. VSSTRESN VISITNUM;
+  STUDYID='SYN001'; USUBJID=cats(STUDYID,'-',SUBJID);
+  VSTESTCD='PULSE'; VSSTRESU='beats/min';
+  if VISITNUM=0 then VISIT='Baseline'; else VISIT='Follow-up'; drop SUBJID;
+datalines;
+001|1|2025-01-09|60|0
+001|2|2025-01-15|72|1
+002|1|2025-01-09|0|0
+002|2|2025-01-15|10|1
+003|1|2025-01-09|70|0
+003|2|2025-01-09|71|0
+003|3|2025-01-15|80|1
+007|1|2025-01-09|65|0
+009|1|2025-01-11|60|0
+009|2|2025-01-15|.|1
+010|1|2025-01-15|85|1
+012|1|2025-01|70|0
+;
+run;
+
+data sdtm.ae;
+  length STUDYID $8 USUBJID $12 SUBJID $3 AESEQ 8 AETERM AEDECOD $24
+         AEBODSYS $32 AESEV $8 AESER $1 AESTDTC AEENDTC $10;
+  infile datalines dlm='|' dsd truncover;
+  input SUBJID :$3. AESEQ AETERM :$24. AESTDTC :$10. AEENDTC :$10.;
+  STUDYID='SYN001'; USUBJID=cats(STUDYID,'-',SUBJID);
+  AEDECOD=AETERM; AEBODSYS='SYNTHETIC CATEGORY'; AESEV='MILD'; AESER='N';
+  drop SUBJID;
+datalines;
+001|1|Headache|2025-01-09|2025-01-12
+001|2|Headache|2025-01-10|2025-01-11
+001|3|Headache|2025-01-10|2025-01-11
+002|1|Nausea|2025-02-19|2025-02-20
+002|2|Nausea|2025-02-20|2025-02-21
+003|1|Rash|2025-01|2025-01-15
+007|1|Headache|2025-01-11|2025-01-12
+008|1|Nausea|2025-01-15|2025-01-16
+009|1|Rash|2025-01-12|2025-01-13
+012|1|Headache||2025-01-15
+;
+run;
+
+data sdtm.cm;
+  length STUDYID $8 USUBJID $12 SUBJID $3 CMSEQ 8 CMTRT $24
+         CMSTDTC CMENDTC $10 CMENRF $8;
+  infile datalines dlm='|' dsd truncover;
+  input SUBJID :$3. CMSEQ CMTRT :$24. CMSTDTC :$10. CMENDTC :$10. CMENRF :$8.;
+  STUDYID='SYN001'; USUBJID=cats(STUDYID,'-',SUBJID); drop SUBJID;
+datalines;
+001|1|Medication A|2025-01-01|2025-01-09|
+001|2|Medication B|2025-01-05|2025-01-10|
+002|1|Medication A|2025-01-20|2025-01-22|
+002|2|Medication B|2025-01-21|2025-01-22|
+003|1|Medication A|2025-01-05||ONGOING
+004|1|Medication A|2025-01|2025-01-15|
+005|1|Medication A|2025-01-05||
+007|1|Medication A|2025-01-05|2025-01-15|
+008|1|Medication A|2025-01-05|2025-01-15|
+009|1|Medication A|2025-01-01|2025-01-11|
+012|1|Medication A|2025-01-10|2025-01-20|
+;
+run;

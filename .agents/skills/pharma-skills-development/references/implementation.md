@@ -1,37 +1,36 @@
-# Standards and implementation workflow
+# ADaM implementation contract
 
-## Evidence retrieval
+## Evidence and authority
 
-Start with the study's pinned versions and the question being answered. Use official sources where available:
+Start from the study's pinned versions. Authoritative entry points:
+- [CDISC ADaM](https://www.cdisc.org/standards/foundational/adam)
+- [OCCDS v1.1](https://www.cdisc.org/standards/foundational/adam/adam-structure-occurrence-data-implementation-guide-v1-1)
+- [CDISC Library](https://www.cdisc.org/cdisc-library/api-documentation/oas3)
+- [NCI CDISC terminology](https://www.cancer.gov/research/resources/terminology/cdisc)
 
-- SDTMIG: https://www.cdisc.org/standards/foundational/sdtmig
-- ADaM: https://www.cdisc.org/standards/foundational/adam
-- CDISC Library API documentation: https://www.cdisc.org/cdisc-library/api-documentation/oas3
-- NCI CDISC terminology: https://www.cancer.gov/research/resources/terminology/cdisc
+Read the actual relevant source before attributing a rule. Record document/version, section or metadata locator, URL/local identifier and retrieval date. Metadata APIs do not replace narrative guidance. If the requested guide is unavailable, name the gap; do not invent a citation or substitute a different version silently. Do not redistribute licensed guides.
 
-These are entry points, not evidence for every implementation rule. Verify current access, version coverage, and exact source content when used. API metadata does not necessarily contain the narrative guidance needed to resolve an implementation question. Use authorized local guides when online access is unavailable; do not redistribute licensed guide content or assume credentials exist.
+Approved protocol/SAP/specifications govern study decisions; identify conflicts for resolution rather than silently choosing precedence. Model/guide rules, CT, sponsor conventions and synthetic choices must be labeled separately.
 
-For each substantive answer retain: question, standard/model/IG/CT version as relevant, source title and URL or local identifier, section/page or metadata locator, retrieval date, supported interpretation, and unresolved points. Distinguish direct requirements from your inference. If a relevant source cannot be read, state the gap and do not fabricate a definitive answer.
+## Inputs and outputs
 
-## Implementation contract
+Inputs: target datasets; SDTM datasets and keys; approved derivation spec/SAP/protocol; variable/parameter metadata; treatment/population definitions; date, visit, baseline and occurrence rules; SAS runtime and sponsor conventions if applicable.
 
-Before dependent coding, establish:
+Outputs: readable .sas code, dataset attributes, source-to-target derivation notes, checks and discrepancy report. Actual derived datasets and logs require execution. Distinguish missing specification, missing source data and missing runtime.
 
-1. Inputs: dataset schema and keys, source provenance, approved SAP/spec/shell versions, study context.
-2. Decisions: analysis population, planned/actual treatment, reference levels, date/window boundaries, missingness and partial-date handling, record selection, counting unit, and denominators.
-3. Outputs: datasets and metadata, code, logs, numeric TLF results, rendered artifacts, and traceability.
-4. Checks: expected key uniqueness and join cardinality, filtering/exclusion counts, reference examples, numerical tolerances, and runtime availability.
+For each target variable retain source domain/variable, join keys, transformation or rule ID, metadata, and the QC expectation. Preserve source sequence numbers and DTC strings where relevant. Complex derived records require explicit lineage, not a fabricated one-to-one source sequence.
 
-For an unresolved decision, record the question, affected outputs, source gap, and whether independent work can continue. Never use an unfilled configuration field as a runtime default.
+## Decisions to resolve before dependent coding
 
-## Safety MVP details
+- ADSL: subject inclusion, randomization evidence, planned/actual treatment, exposure aggregation, population definitions and disposition record selection.
+- BDS: parameter/unit mapping, analysis date/time, baseline eligibility and ties, visit windows and ties, analysis flags, missing values and zero BASE handling.
+- OCCDS: date completion/imputation and flags, TEAE window and worsening rules, medication prior/concomitant definitions, open-ended intervals and treatment periods.
+- All: flag-specific allowed values, output types/lengths/labels/formats, exclusions, source links and numerical tolerances.
 
-- ADSL: one row per subject; check population flags, treatment variables, exposure dates, and the provenance of demographic variables. Preserve counts before and after exclusions.
-- ADAE: retain an event identifier and subject linkage; implement specified TEAE and partial-date rules. Preserve original dates and derivation/imputation flags as specified. Do not treat missing TEAE classification as false without an explicit rule.
-- Demographics: document analysis population and denominator per variable/category; specify continuous summaries, missing-value presentation, and precision.
-- TEAE: explicitly separate subject incidence from event frequency. Deduplicate at the required overall/SOC/PT level independently. Define denominators, zero cells, sorting, and treatment grouping.
-- Joins: check expected cardinality before joining and counts afterward. Investigate unexpected duplication rather than deleting duplicates to make a check pass.
+Do not silently translate uncertain classification into “N”. Do not assume all flags use Y/N or Y/blank. Ask for a variable-specific rule with its basis.
 
-Keep numeric table cells separate from display formatting so QC can compare values before rounding. Validate titles, labels, treatment columns, footnotes, pagination, and clipping in rendered outputs. If rendering is unavailable, report visual verification as pending.
+## Shared sequence
 
-When expanding to inference, document model, estimand, analysis set, reference levels, missing-data strategy, SE/CI method, and multiplicity handling. Preserve sample sizes, exclusions, uncertainty, and model-specific diagnostics. Do not change these to obtain a successful run.
+Inspect sources → confirm rules and metadata → check source keys → build ADSL → independently check ADSL → build requested BDS/OCCDS from source plus ADSL → compare against independent expectations → reconcile shared variables and counts → report evidence.
+
+For existing ADSL, inspect its checks and provenance rather than unnecessarily rebuilding it. If required ADSL fields are invalid or unsupported, block affected downstream derivations and explain why. Keep unresolved records visible in an issue listing.

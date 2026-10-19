@@ -1,40 +1,47 @@
-# Copy into the study's existing configuration location and resolve applicable fields.
-# null means unresolved or unavailable, never an implicit analysis default.
+# null = unresolved; use approved documents for applicable decisions.
+# Decision checklist only; not an executable SAS configuration parser.
 study_id: null
-purpose: synthetic_demonstration
-language: null
+purpose: null
+language: SAS
+runtime_target: SAS 9.4
+targets: [ADSL, ADLB, ADVS, ADAE, ADCM]
 standards:
   sdtm_model: null
   sdtmig: null
   adam_model: null
   adamig: null
-  additional_implementation_guides: []
+  occds_guide: null
   controlled_terminology_release: null
 sources:
-  protocol: null
-  sap: null
-  derivation_spec: null
-  tlf_shells: null
-  sponsor_conventions: null
+  protocol: {location: null, version: null, approval_status: null}
+  sap: {location: null, version: null, approval_status: null}
+  derivation_spec: {location: null, version: null, approval_status: null}
+  variable_metadata: {location: null, version: null}
+  parameter_metadata: {location: null, version: null}
+  sponsor_conventions: {location: null, version: null}
 analysis:
-  safety_population: null
-  treatment_variable: null
-  treatment_reference_level: null
-  baseline_rule: null
-  visit_windows: null
-  teae_window_and_boundaries: null
+  subject_inclusion: null
+  population_definitions: null
+  treatment_mapping: null
+  exposure_aggregation: null
+  disposition_selection: null
+  flag_value_sets: null
+  baseline_eligibility_and_ties: null
+  visit_windows_and_ties: null
+  analysis_record_selection: null
+  zero_baseline_handling: null
+  normal_range_rules: null
   partial_date_handling: null
   missing_data_handling: null
-  subject_incidence_counting_rule: null
-  table_denominators: null
-  inferential_methods: null
+  teae_window_and_worsening: null
+  medication_prior_concomitant_rules: null
 execution:
-  seed: null
+  project_root: null
   runtime_version: null
-  dependency_versions: {}
+  sponsor_macro_interfaces: []
+  seed_if_random: null
 validation:
   independent_reference_location: null
   numeric_tolerances: null
   acceptance_criteria: null
-# Record each applicable decision's source/version/locator and status here.
 decision_log: []

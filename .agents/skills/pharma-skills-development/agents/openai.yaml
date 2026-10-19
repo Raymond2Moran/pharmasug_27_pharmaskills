@@ -1,4 +1,4 @@
 interface:
-  display_name: "Pharma Skills Development"
-  short_description: "Build and evaluate pharma statistical programming skills"
-  default_prompt: "Use $pharma-skills-development to advance the next scoped milestone of this pharma/CRO skills project with reproducible validation."
+  display_name: "SAS ADaM Skills Development"
+  short_description: "Build ADSL-first SAS ADaM skills and QC examples"
+  default_prompt: "Use $pharma-skills-development to advance this SAS ADaM project, prioritizing ADSL and independently checked BDS/OCCDS derivations."
