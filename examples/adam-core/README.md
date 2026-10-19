@@ -13,6 +13,16 @@ Start from the repository root in an environment with Base SAS:
 sas -sysin examples/adam-core/run_all.sas
 ```
 
+In SAS Viya, `setup_viya.sas` can bootstrap the runtime files into WORK from
+the GitHub `main` branch and then include `run_all.sas`:
+
+```sas
+%include "<path-to-repo>/examples/adam-core/setup_viya.sas";
+```
+
+Use a pinned commit or reviewed local checkout when controlled validation
+requires reproducibility.
+
 In an existing SAS session, define PROJECT_ROOT to the checkout directory and
 include run_all.sas. The default is the current working directory. No external
 macro library, package or network connection is required. All fixtures use fixed
@@ -71,7 +81,9 @@ Authored: source fixtures, five production programs, shared Base SAS helpers,
 runner, independent expected values, metadata/source reconciliation checks and
 negative cases. Static review and Python log-screen tests are possible locally.
 
-**SAS execution, compiled syntax, numeric comparisons, negative-case detection
-and actual SAS logs have not been verified:** no SAS runtime was available in
-the authoring environment. No derived .sas7bdat files or fabricated execution
-logs are included. See [validation status](validation.md).
+Initial SAS Viya runtime validation was recorded on **2026-10-19** for the
+SYN001 fixture. PROC COMPARE checks passed for ADSL, ADLB, ADVS, ADAE and ADCM
+with zero unequal observations across 62 target records; critical metadata
+checks also passed. Full SAS log review, negative-case execution and independent
+review remain pending. No derived .sas7bdat files or fabricated execution logs
+are included. See [validation status](validation.md).
