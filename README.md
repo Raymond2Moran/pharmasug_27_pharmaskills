@@ -6,6 +6,19 @@ This is the repository for the development of pharma-related agent skills for Ph
 
 [pharma-skills-development](.agents/skills/pharma-skills-development/SKILL.md) guides phased development of this project: standards retrieval, specification review, SDTM/ADaM programming, TLF generation, and independent QC.
 
+## Skill workflow
+
+![Pharma Skills Development workflow: study inputs, milestone selection, standards and specification review, implementation and independent QC, comparison, and evidence reporting.](assets/pharma-skills-workflow.svg)
+
+The diagram describes the development workflow guided by the skill. Implementation
+and QC share resolved specifications; QC expectations must be derived independently
+of production code and outputs. Discrepancies lead to revision and rerunning the
+affected checks before a milestone is marked complete.
+
+Diagram created using the [svg-diagram skill](https://github.com/bybit-exchange/svg-diagram).
+
+## Usage
+
 Example invocation:
 
 ```text
