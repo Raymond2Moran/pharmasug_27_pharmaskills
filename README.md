@@ -121,15 +121,17 @@ Checked locally: skill structure, YAML and links, source/specification review,
 fixture counts and reference arithmetic, Python log-screen tests and SVG rendering.
 These checks do **not** execute SAS or establish full CDISC conformance.
 
-Initial SAS Viya runtime evidence was recorded on **2026-10-19** for the
-synthetic SYN001 example. The clean run compared all five ADaM datasets
+SAS Viya runtime validation was completed on **2026-10-19** for the synthetic
+SYN001 example. The fresh clean run compared all five ADaM datasets
 (ADSL, ADLB, ADVS, ADAE and ADCM), covering 62 target records, with zero
 unequal observations in the independent PROC COMPARE checks. ADSL population
 checks and critical metadata checks also matched expected values; one ADVS
-floating-point difference was within the predefined numeric tolerance.
+floating-point difference was within the predefined numeric tolerance. Review
+of the generated run.log found no flagged diagnostics and exactly one completion
+marker. All seven negative scenarios detected their intended injected defects.
 
-Remaining validation work: complete SAS log review, execution of seven negative
-scenarios, independent reviewer sign-off and any broader CDISC/sponsor
-conformance assessment. The evidence supports this bounded fixture, not
-universal production validation. See the
+The project owner waived independent reviewer sign-off for this bounded
+teaching example; no independent review is claimed. Broader CDISC/sponsor
+conformance assessment remains unperformed. The evidence supports this bounded
+fixture, not universal production validation. See the
 [validation record](examples/adam-core/validation.md).

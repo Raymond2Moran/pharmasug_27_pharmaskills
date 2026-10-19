@@ -81,9 +81,12 @@ Authored: source fixtures, five production programs, shared Base SAS helpers,
 runner, independent expected values, metadata/source reconciliation checks and
 negative cases. Static review and Python log-screen tests are possible locally.
 
-Initial SAS Viya runtime validation was recorded on **2026-10-19** for the
-SYN001 fixture. PROC COMPARE checks passed for ADSL, ADLB, ADVS, ADAE and ADCM
-with zero unequal observations across 62 target records; critical metadata
-checks also passed. Full SAS log review, negative-case execution and independent
-review remain pending. No derived .sas7bdat files or fabricated execution logs
-are included. See [validation status](validation.md).
+SAS Viya runtime validation was completed on **2026-10-19** for the SYN001
+fixture. PROC COMPARE checks passed for ADSL, ADLB, ADVS, ADAE and ADCM with
+zero unequal observations across 62 target records; critical metadata checks
+also passed. Review of the generated run.log found no flagged diagnostics and
+exactly one completion marker. All seven negative scenarios detected their
+intended injected defects. The project owner waived independent reviewer
+sign-off for this bounded teaching example; no independent review or broader
+CDISC/sponsor conformance is claimed. No derived .sas7bdat files or fabricated
+execution logs are included. See [validation status](validation.md).
