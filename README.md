@@ -1,7 +1,7 @@
 # SAS ADaM Core Dataset Skills
 
 This PharmaSUG 2027 project develops specification-driven agent skills for
-**ADaM core dataset development in SAS 9.4**, with ADSL as the first priority.
+**ADaM core dataset development in SAS 9.4**, prioritizing ADSL.
 The initial scope is ADSL, BDS ADLB/ADVS and OCCDS ADAE/ADCM. “Core” denotes our
 selected project scope, not a fixed set of datasets required by CDISC for every study.
 
@@ -22,7 +22,7 @@ ADSL provides checked subject-level context to downstream datasets. ADLB/ADVS
 also require LB/VS; ADAE/ADCM also require AE/CM. Source-specific derivations
 cannot be constructed from ADSL alone.
 
-Version 1 targets general Base SAS 9.4 without sponsor-private macros. Standards
+Current version targets general Base SAS 9.4 without sponsor-private macros. Standards
 retrieval and specification review support dataset development; QC is integrated
 into each dataset skill. Raw-to-SDTM generation, TLF production, ADTTE, tumor
 response, complex multi-period designs and full submission packaging are outside
@@ -41,7 +41,7 @@ The three dataset skills can be invoked directly. They share references in the
 project skill, so distribute the repository skill bundle together. Study-specific
 rules and unresolved decisions can be recorded in the
 [study-context template](.agents/skills/pharma-skills-development/assets/study-context.yaml).
-This template is a decision checklist, not a SAS configuration parser.
+Specific skill(s) can be invoked as the prompts below:
 
 ```text
 Use $sas-adam-adsl to develop ADSL from the supplied DM, EX and DS,
@@ -76,8 +76,7 @@ The [12-subject example](examples/adam-core/README.md) includes synthetic
 DM/EX/DS/LB/VS/AE/CM, five production programs, a dependency-ordered runner,
 hand-authored expected values, QC comparisons, metadata checks and negative cases.
 The [specification](examples/adam-core/specification.md) explicitly defines its
-synthetic rules. It is a bounded teaching example, not a general validated
-benchmark pipeline.
+synthetic rules.
 
 From the repository root, in an environment with SAS installed:
 
