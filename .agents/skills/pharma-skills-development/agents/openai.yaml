@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pharma Skills Development"
+  short_description: "Build and evaluate pharma statistical programming skills"
+  default_prompt: "Use $pharma-skills-development to advance the next scoped milestone of this pharma/CRO skills project with reproducible validation."

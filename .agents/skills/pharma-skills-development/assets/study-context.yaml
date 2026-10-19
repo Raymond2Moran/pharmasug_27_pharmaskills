@@ -1,0 +1,40 @@
+# Copy into the study's existing configuration location and resolve applicable fields.
+# null means unresolved or unavailable, never an implicit analysis default.
+study_id: null
+purpose: synthetic_demonstration
+language: null
+standards:
+  sdtm_model: null
+  sdtmig: null
+  adam_model: null
+  adamig: null
+  additional_implementation_guides: []
+  controlled_terminology_release: null
+sources:
+  protocol: null
+  sap: null
+  derivation_spec: null
+  tlf_shells: null
+  sponsor_conventions: null
+analysis:
+  safety_population: null
+  treatment_variable: null
+  treatment_reference_level: null
+  baseline_rule: null
+  visit_windows: null
+  teae_window_and_boundaries: null
+  partial_date_handling: null
+  missing_data_handling: null
+  subject_incidence_counting_rule: null
+  table_denominators: null
+  inferential_methods: null
+execution:
+  seed: null
+  runtime_version: null
+  dependency_versions: {}
+validation:
+  independent_reference_location: null
+  numeric_tolerances: null
+  acceptance_criteria: null
+# Record each applicable decision's source/version/locator and status here.
+decision_log: []
