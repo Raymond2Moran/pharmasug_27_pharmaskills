@@ -1,14 +1,13 @@
 # SAS ADaM Core Dataset Skills
 
-This PharmaSUG 2027 project develops specification-driven agent skills for
-**ADaM core dataset development in SAS 9.4**, prioritizing ADSL.
-The initial scope is ADSL, BDS ADLB/ADVS and OCCDS ADAE/ADCM. “Core” denotes our
-selected project scope, not a fixed set of datasets required by CDISC for every study.
+This PharmaSUG 2027 project provides a set of agent skills for **developing and
+checking ADaM datasets in SAS, guided by approved study specifications**. It
+follows an ADSL-first workflow and currently covers five datasets: ADSL,
+ADLB, ADVS, ADAE and ADCM. “Core” describes the scope of this project.
 
-The intended users are CRO and pharma statistical programmers developing and
-reviewing analysis datasets. Existing SDTM and approved study documents are
-inputs; the deliverables are readable SAS programs, dataset metadata, derivation
-traceability and QC evidence.
+The skills are intended for statistical programmers in CROs and pharmaceutical
+companies. They use existing SDTM datasets and approved study documents to
+guide SAS programming, metadata preparation, derivation documentation and QC.
 
 ## Aim and scope
 
@@ -18,15 +17,17 @@ traceability and QC evidence.
 | Next | BDS: ADLB, ADVS | Parameter mapping, analysis dates/visits, baseline selection, BASE/CHG/PCHG, analysis flags and laboratory normal ranges |
 | Next | OCCDS: ADAE, ADCM | Occurrence records, source dates, date uncertainty, treatment-emergent AE and prior/concomitant medication classifications |
 
-ADSL provides checked subject-level context to downstream datasets. ADLB/ADVS
-also require LB/VS; ADAE/ADCM also require AE/CM. Source-specific derivations
-cannot be constructed from ADSL alone.
+ADSL is developed and checked first, then supplies subject-level treatment and
+population information to the downstream datasets. ADLB and ADVS also require
+LB and VS; ADAE and ADCM require AE and CM.
 
-Current version targets general Base SAS 9.4 without sponsor-private macros. Standards
-retrieval and specification review support dataset development; QC is integrated
-into each dataset skill. Raw-to-SDTM generation, TLF production, ADTTE, tumor
-response, complex multi-period designs and full submission packaging are outside
-this release.
+The skills target Base SAS 9.4 and do not depend on external sponsor macro
+libraries. Shared guidance covers standards references, specification review,
+SAS conventions and QC.
+
+The current scope excludes raw-to-SDTM development, TLF production, ADTTE,
+tumor response, complex multi-period treatment algorithms and full submission
+packaging.
 
 ## Skills and usage
 
@@ -37,11 +38,12 @@ this release.
 | [sas-adam-bds](.agents/skills/sas-adam-bds/SKILL.md) | Develop ADLB/ADVS using checked ADSL and source findings |
 | [sas-adam-occds](.agents/skills/sas-adam-occds/SKILL.md) | Develop ADAE/ADCM using checked ADSL and source occurrences |
 
-The three dataset skills can be invoked directly. They share references in the
-project skill, so distribute the repository skill bundle together. Study-specific
-rules and unresolved decisions can be recorded in the
-[study-context template](.agents/skills/pharma-skills-development/assets/study-context.yaml).
-Specific skill(s) can be invoked as the prompts below:
+Each dataset skill can be invoked directly. Keep the skill bundle together
+because the dataset skills use shared references in
+`pharma-skills-development`.
+
+Use the [study-context template](.agents/skills/pharma-skills-development/assets/study-context.yaml)
+to record study-specific rules, document versions and unresolved decisions.
 
 ```text
 Use $sas-adam-adsl to develop ADSL from the supplied DM, EX and DS,
@@ -63,20 +65,36 @@ Apply the specified TEAE and medication interval rules and expose uncertainty.
 
 ![SAS ADaM workflow: existing SDTM and approved study rules feed ADSL development and QC, then BDS and OCCDS with their own source domains, followed by independent comparison and evidence reporting.](assets/pharma-skills-workflow.svg)
 
-The workflow prioritizes ADSL before its downstream consumers. QC checks
-structure, metadata, derivations and logs separately. Downstream agreement with
-ADSL is supplemented with source-based expectations to detect consistently
-propagated errors. Discrepancies trigger rule/code review and rerunning checks.
+The workflow starts with source-data checks and specification review. ADSL is
+then developed and checked before its subject-level variables are used in
+ADLB, ADVS, ADAE and ADCM.
 
-Diagram follows the [svg-diagram skill](https://github.com/bybit-exchange/svg-diagram).
+QC addresses dataset structure, metadata, derivations, cross-dataset consistency
+and SAS logs. Source-based expectations supplement checks against ADSL so that
+an error carried consistently into downstream datasets can still be detected.
+Discrepancies lead to review of the relevant rules and code, followed by
+rerunning the affected checks.
+
+The workflow diagram was created following the
+[svg-diagram skill](https://github.com/bybit-exchange/svg-diagram).
 
 ## Worked SAS example
 
-The [12-subject example](examples/adam-core/README.md) includes synthetic
-DM/EX/DS/LB/VS/AE/CM, five production programs, a dependency-ordered runner,
-hand-authored expected values, QC comparisons, metadata checks and negative cases.
-The [specification](examples/adam-core/specification.md) explicitly defines its
-synthetic rules.
+
+The [worked example](examples/adam-core/README.md) demonstrates the workflow
+with 12 synthetic subjects and SDTM-shaped DM, EX, DS, LB, VS, AE and CM data.
+It includes:
+
+- SAS programs for all five ADaM datasets and shared helper code.
+- A runner that executes programs and checks in dependency order.
+- An explicit [synthetic study specification](examples/adam-core/specification.md).
+- Hand-authored expected values, metadata checks and source reconciliation.
+- Seven negative scenarios that test whether QC detects deliberately introduced defects.
+- A Python utility for screening SAS logs.
+
+The expected values are authored separately from the production outputs.
+The example illustrates the specified synthetic study rules; adapting it to
+another study requires review of that study's inputs and approved decisions.
 
 From the repository root, in an environment with SAS installed:
 
@@ -95,43 +113,45 @@ Public-source review date: **2026-10-19**. The nearest related work is
 | [statistical-reviewer](https://github.com/RConsortium/pharma-skills/blob/main/statistical-reviewer/SKILL.md) | Reviews results and traces TLF/ADaM/SDTM against study documents | Related QC work; our scope is dataset construction with a small independent fixture oracle |
 | [sdtm-oak](https://github.com/RConsortium/pharma-skills/blob/main/sdtm-oak/SKILL.md) | R raw-to-SDTM mapping using `{sdtm.oak}` | Upstream work; our first release starts with existing SDTM |
 
-Our proposed contribution is a **SAS-focused, ADSL-first skill bundle connecting
-specifications, reviewable SAS derivations, cross-dataset consistency and
-independent QC examples** across ADSL, ADLB, ADVS, ADAE and ADCM. This includes
-explicit treatment of SAS execution/log evidence and unresolved analysis rules.
+This project's contribution is a SAS-focused implementation of an ADSL-first
+skill workflow across ADSL, ADLB, ADVS, ADAE and ADCM. It connects approved
+specifications with reviewable SAS code, derivation traceability,
+cross-dataset checks and independently authored QC expectations. The worked
+example also demonstrates log screening and detection of selected defects.
 
-Among the public skills reviewed in this search, we have not confirmed a
-SAS implementation with the same coverage and deliverable combination. This is
-a scoped observation, not proof that no such project exists or a claim of
-global priority. Category-based skills, ADaM derivation and independent review
-are established ideas; the contribution to evaluate is this specific SAS
-workflow and its demonstrated behavior.
+The project draws on established patterns such as focused dataset guidance,
+explicit inputs and traceable QC. Study rules are defined explicitly rather
+than inherited from another package's defaults. The examples require no
+third-party skills or R packages.
 
-We adopt useful design patterns—focused dataset references, explicit inputs,
-study-decision annotations and traceable QC—without mechanically translating
-R package calls or importing their defaults as study rules. No third-party
-skill is installed or required by the examples.
+While reviewing existing agent skills and bundles, we did not identify a SAS skill bundle with the same
+combination of scope and deliverables. This observation is limited to the sources reviewed and does not 
+establish novelty or priority.
 
 ## Current status and verification
 
-Delivered: four skills with shared guidance, SAS examples, explicit specifications,
-independent reference values, QC/negative-case programs and this workflow diagram.
+The repository includes four skills, shared references, a study-context
+template, SAS programs for all five datasets, QC programs, negative scenarios
+and a workflow diagram.
 
-Checked locally: skill structure, YAML and links, source/specification review,
-fixture counts and reference arithmetic, Python log-screen tests and SVG rendering.
-These checks do **not** execute SAS or establish full CDISC conformance.
+Local checks covered skill structure, YAML, relative links, source and
+specification consistency, fixture counts, reference arithmetic, Python
+log-screen tests and SVG rendering.
 
-SAS Viya runtime validation was completed on **2026-10-19** for the synthetic
-SYN001 example. The fresh clean run compared all five ADaM datasets
-(ADSL, ADLB, ADVS, ADAE and ADCM), covering 62 target records, with zero
-unequal observations in the independent PROC COMPARE checks. ADSL population
-checks and critical metadata checks also matched expected values; one ADVS
-floating-point difference was within the predefined numeric tolerance. Review
-of the generated run.log found no flagged diagnostics and exactly one completion
-marker. All seven negative scenarios detected their intended injected defects.
+The [validation record](examples/adam-core/validation.md) documents a SAS Viya
+run of the synthetic SYN001 example completed on **2026-10-19**:
 
-The project owner waived independent reviewer sign-off for this bounded
-teaching example; no independent review is claimed. Broader CDISC/sponsor
-conformance assessment remains unperformed. The evidence supports this bounded
-fixture, not universal production validation. See the
-[validation record](examples/adam-core/validation.md).
+- All five datasets passed the specified PROC COMPARE checks, with zero
+  unequal observations across 62 target records.
+- One ADVS floating-point difference was within the predefined numeric tolerance.
+- ADSL population, attribute and critical metadata checks matched expectations.
+- The generated log had no flagged diagnostics and contained exactly one
+  completion marker.
+- All seven negative scenarios detected their intended injected defects.
+
+These results support the documented SYN001 example and its QC controls.
+They do not establish performance across other studies or agent runs.
+Independent clinical/statistical reviewer sign-off was waived for this
+teaching example, and broader CDISC/sponsor conformance assessment has not
+been performed. Generated SAS datasets and execution logs are not included
+in the repository.
