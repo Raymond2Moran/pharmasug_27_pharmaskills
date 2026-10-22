@@ -63,7 +63,13 @@ Apply the specified TEAE and medication interval rules and expose uncertainty.
 
 ## Workflow
 
-![SAS ADaM workflow: existing SDTM and approved study rules feed ADSL development and QC, then BDS and OCCDS with their own source domains, followed by independent comparison and evidence reporting.](assets/pharma-skills-workflow.svg)
+<p align="center">
+  <img
+    src="assets/pharma-skills-workflow.svg"
+    alt="SAS ADaM workflow"
+    width="700"
+  />
+</p>
 
 The workflow starts with source-data checks and specification review. ADSL is
 then developed and checked before its subject-level variables are used in
